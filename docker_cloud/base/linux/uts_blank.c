@@ -8,23 +8,23 @@
 
 #define STACK_SIZE (1024*1024)
 
-static char child_stack[STACK_SIZE]
+static char child_stack[STACK_SIZE];
 char* const child_args[] ={
 	"/bin/bash",
 	NULL
-}
+};
 
 int child_main(void* args){
 	printf("在子进程中\n");
 	execv(child_args[0], child_args);
-	return;
+	return 1;
 }
 
 int main(){
 	printf("程序开始\n");
-	int child_pid = clone(child_main, child_stack+STACK_SIZE, SIGCHLD, NULL)
-	waitpid(child_pid, NULL, 0)
-	printf("退出\n")
+	int child_pid = clone(child_main, child_stack+STACK_SIZE, SIGCHLD, NULL);
+	waitpid(child_pid, NULL, 0);
+	printf("退出\n");
 	return 0;
 }
 
